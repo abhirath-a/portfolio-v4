@@ -18,7 +18,7 @@ export default function MobileNav({
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" aria-label="Menu">
           <Menu />
         </Button>
       </SheetTrigger>

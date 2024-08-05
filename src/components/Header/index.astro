@@ -71,6 +71,7 @@ console.log(currentURL);
                 href={link.href}
                 class={buttonVariants({ variant: "ghost", size: "icon" })}
                 target="_blank"
+                aria-label={`Visit ${link.name}`}
               >
                 <link.icon />
               </a>
@@ -88,6 +89,7 @@ console.log(currentURL);
                   href={link.href}
                   class={buttonVariants({ variant: "ghost", size: "icon" })}
                   target="_blank"
+                  aria-label={`Visit ${link.name}`}
                 >
                   <link.icon />
                 </a>
