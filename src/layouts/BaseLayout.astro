@@ -29,7 +29,7 @@ import Header from "@/components/Header/index.astro";
       <slot />
     </main>
     <script is:inline>
-      const theme = (() => {
+      const localTheme = (() => {
         if (
           typeof localStorage !== "undefined" &&
           localStorage.getItem("theme")
@@ -42,12 +42,12 @@ import Header from "@/components/Header/index.astro";
         return "light";
       })();
 
-      if (theme === "light") {
+      if (localTheme === "light") {
         document.documentElement.classList.remove("dark");
       } else {
         document.documentElement.classList.add("dark");
       }
-      window.localStorage.setItem("theme", theme);
+      window.localStorage.setItem("theme", localTheme);
     </script>
   </body>
 </html>
