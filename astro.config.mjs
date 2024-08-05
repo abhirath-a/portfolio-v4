@@ -7,5 +7,13 @@ import alpinejs from "@astrojs/alpinejs";
 
 // https://astro.build/config
 export default defineConfig({
-	integrations: [react(), tailwind(), mdx(), alpinejs()],
+  integrations: [
+    react(),
+    tailwind(),
+    mdx({
+      syntaxHighlight: "shiki",
+      shikiConfig: { theme: "catppuccin-mocha" },
+    }),
+    alpinejs(),
+  ],
 });
