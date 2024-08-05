@@ -1,0 +1,35 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+interface Post {
+  data: { title: string; date: string; description?: string };
+  slug: string;
+}
+const unfilteredPosts = await getCollection("blog");
+const posts = unfilteredPosts.filter((post) => !post.data.draft);
+---
+
+<Layout title="Blog">
+  <section class="w-full">
+    {
+      posts.length === 0 ? (
+        <p class="text-center">None, for now...</p>
+      ) : (
+        <h1 class="text-4xl font-bold mb-4">Posts</h1>
+      )
+    }
+    <ul>
+      {
+        // @ts-ignore
+        posts.map((post: Post) => (
+          <li class="flex justify-between">
+            <a href={`/blog/${post.slug}/`} class="underline text-lg">
+              {post.data.title}
+            </a>
+            <p>{new Date().toLocaleDateString(post.data.date)}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>
