@@ -6,21 +6,8 @@ import { contentfulClient } from "@/lib/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { BlogPost } from "@/lib/contentful";
 import { Separator } from "@/components/ui/separator";
-// export async function getStaticPaths() {
-// 	const posts = await getCollection("blog", ({ data }) => {
-// 		return data.draft !== true;
-// 	});
-// 	// @ts-ignore
-// 	return posts.map((post: Post) => ({
-// 		params: { slug: post.slug },
-// 		props: post,
-// 	}));
-// }
-// type Props = CollectionEntry<"blog">;
+import { MARKS, type Document } from "@contentful/rich-text-types";
 
-// const post = Astro.props;
-// const { Content } = await post.render();
-// console.log(post);
 let post;
 const { slug } = Astro.params;
 try {
@@ -32,11 +19,18 @@ try {
   post = {
     title,
     date: new Date(date).toLocaleDateString(),
-    content: documentToHtmlString(content),
+    content: content,
   };
 } catch (error) {
   return Astro.redirect("/404");
 }
+const renderDocument = (content: Document) =>
+  documentToHtmlString(content, {
+    renderMark: {
+      [MARKS.CODE]: (text: string) =>
+        `<pre class="bg-ctp-mocha-bg"><code>${text}</code></pre>`,
+    },
+  });
 ---
 
 <Layout title={post.title} classList="overflow-x-hidden">
@@ -50,14 +44,14 @@ try {
       }
       <Separator className="my-2" />
       <article
-        class="prose dark:prose-invert flex w-full flex-col md:max-w-4xl"
-        set:html={post?.content}
+        class="prose dark:prose-invert flex w-full flex-col md:max-w-4xl justify-center"
+        set:html={renderDocument(post.content)}
       />
     </header>
   </section>
   <script is:inline src="/highlight/highlight.min.js"></script>
   <script is:inline>
-    document.querySelectorAll("code").forEach((block) => {
+    document.querySelectorAll("pre code").forEach((block) => {
       hljs.highlightElement(block);
     });
   </script>

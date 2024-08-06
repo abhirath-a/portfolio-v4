@@ -1,17 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-// import { getCollection } from "astro:content";
-// interface Post {
-//   data: { title: string; date: string; description?: string };
-//   slug: string;
-// }
-// const unfilteredPosts = await getCollection("blog");
-// const posts = unfilteredPosts.filter((post) => !post.data.draft);
 import { contentfulClient } from "@/lib/contentful";
 import type { BlogPost } from "@/lib/contentful";
 
 const entries = await contentfulClient.getEntries<BlogPost>({
   content_type: "blogPost",
+  
 });
 
 const posts = entries.items.map((item) => {

@@ -37,7 +37,11 @@ import { buttonVariants } from "@/components/ui/button";
 
 <script is:inline>
   // Function to get the current theme from localStorage or default to 'light'
-  const getTheme = () => localStorage.getItem("theme") ?? "light";
+  const getTheme = () =>
+    localStorage.getItem("theme") ??
+    (window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light");
 
   // Function to set the theme in localStorage and update the document class
   const setTheme = (theme) => {
