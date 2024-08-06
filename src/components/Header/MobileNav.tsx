@@ -31,7 +31,7 @@ export default function MobileNav({
               href="/"
               className={cn(
                 "hover:underline",
-                currentURL.includes("/")
+                currentURL.length == 1
                   ? "dark:text-white text-black"
                   : "dark:text-slate-400 text-slate-500"
               )}
