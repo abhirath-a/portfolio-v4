@@ -2,39 +2,63 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-export async function getStaticPaths() {
-	const posts = await getCollection("blog", ({ data }) => {
-		return data.draft !== true;
-	});
-	// @ts-ignore
-	return posts.map((post: Post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
-}
-type Props = CollectionEntry<"blog">;
+import { contentfulClient } from "@/lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { BlogPost } from "@/lib/contentful";
+import { Separator } from "@/components/ui/separator";
+// export async function getStaticPaths() {
+// 	const posts = await getCollection("blog", ({ data }) => {
+// 		return data.draft !== true;
+// 	});
+// 	// @ts-ignore
+// 	return posts.map((post: Post) => ({
+// 		params: { slug: post.slug },
+// 		props: post,
+// 	}));
+// }
+// type Props = CollectionEntry<"blog">;
 
-const post = Astro.props;
-const { Content } = await post.render();
-console.log(post);
+// const post = Astro.props;
+// const { Content } = await post.render();
+// console.log(post);
+let post;
+const { slug } = Astro.params;
+try {
+  const data = await contentfulClient.getEntries<BlogPost>({
+    content_type: "blogPost",
+    "fields.slug": slug,
+  });
+  const { title, date, content } = data.items[0].fields;
+  post = {
+    title,
+    date: new Date(date).toLocaleDateString(),
+    content: documentToHtmlString(content),
+  };
+} catch (error) {
+  return Astro.redirect("/404");
+}
 ---
 
-<Layout title={post.data.title}>
-
-  <article class="flex w-full flex-col gap-2">
-    {post.data.draft ? <p>404</p> : <header class="flex w-full flex-col gap-3 mb-2">
-      {post.data.title && <h1 class="text-4xl font-bold">{post.data.title}</h1>}
+<Layout title={post.title} classList="overflow-x-hidden">
+  <section class="flex w-full flex-col gap-2">
+    <header class="flex w-full flex-col gap-3 mb-2">
+      {post.title && <h1 class="text-4xl font-bold">{post.title}</h1>}
       {
-        post.data.date && (
-          <p class="dark:text-slate-400 text-slate-500">
-            {new Date(post.data.date).toDateString()}
-          </p>
+        post.date && (
+          <time class="dark:text-slate-400 text-slate-500">{post.date}</time>
         )
       }
+      <Separator className="my-2" />
+      <article
+        class="prose dark:prose-invert flex w-full flex-col md:max-w-4xl"
+        set:html={post?.content}
+      />
     </header>
-    <div class="prose dark:prose-invert flex w-full flex-col md:max-w-4xl">
-      <Content />
-    </div>}
-  </article>
-
+  </section>
+  <script is:inline src="/highlight/highlight.min.js"></script>
+  <script is:inline>
+    document.querySelectorAll("code").forEach((block) => {
+      hljs.highlightElement(block);
+    });
+  </script>
 </Layout>

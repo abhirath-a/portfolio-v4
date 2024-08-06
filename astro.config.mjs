@@ -1,19 +1,14 @@
-import { defineConfig } from "astro/config";
+import alpinejs from "@astrojs/alpinejs";
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import mdx from "@astrojs/mdx";
+import { defineConfig } from "astro/config";
 
-import alpinejs from "@astrojs/alpinejs";
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [
-    react(),
-    tailwind(),
-    mdx({
-      syntaxHighlight: "shiki",
-      shikiConfig: { theme: "catppuccin-mocha" },
-    }),
-    alpinejs(),
-  ],
+  integrations: [react(), tailwind(), mdx(), alpinejs()],
+  output: "server",
+  adapter: vercel(),
 });
