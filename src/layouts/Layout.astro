@@ -38,6 +38,20 @@ import { ViewTransitions } from "astro:transitions";
     <main class="container w-full py-6 flex justify-center items-center">
       <slot />
     </main>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src={import.meta.env.GOOGLE_ANALYTICS_URL}
+      type="text/partytown"></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", import.meta.env.GOOGLE_ANALYTICS_ID);
+    </script>
     <script is:inline>
       function setInitColorMode() {
         const localTheme = (() => {
