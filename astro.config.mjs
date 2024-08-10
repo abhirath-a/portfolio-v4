@@ -7,6 +7,7 @@ import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
+  output: "server",
   integrations: [
     react(),
     tailwind(),
@@ -14,6 +15,9 @@ export default defineConfig({
       forward: ["dataLayer.push"],
     }),
   ],
-  output: "server",
+
   adapter: vercel(),
+  image: {
+    remotePatterns: [{ protocol: "https" }],
+  },
 });

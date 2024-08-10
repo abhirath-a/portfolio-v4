@@ -1,12 +1,15 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import { contentfulClient } from "@/lib/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { BlogPost } from "@/lib/contentful";
 import { Separator } from "@/components/ui/separator";
-import { MARKS, type Document } from "@contentful/rich-text-types";
+import {
+  MARKS,
+  BLOCKS,
+  type Document,
+  type TopLevelBlock,
+} from "@contentful/rich-text-types";
 
 let post;
 const { slug } = Astro.params;
@@ -24,11 +27,18 @@ try {
 } catch (error) {
   return Astro.redirect("/404");
 }
+
 const renderDocument = (content: Document) =>
   documentToHtmlString(content, {
     renderMark: {
       [MARKS.CODE]: (text: string) =>
         `<pre class="bg-ctp-mocha-bg"><code>${text}</code></pre>`,
+    },
+    renderNode: {
+      [BLOCKS.EMBEDDED_ASSET]: (node) => {
+        const { file } = node.data.target.fields;
+        return `<img src="${file.url}" alt="${file.fileName}"></img>`;
+      },
     },
   });
 ---
@@ -49,10 +59,10 @@ const renderDocument = (content: Document) =>
       />
     </header>
   </section>
-  <script is:inline src="/highlight/highlight.min.js"></script>
-  <script is:inline>
-    document.querySelectorAll("pre code").forEach((block) => {
-      hljs.highlightElement(block);
-    });
-  </script>
 </Layout>
+<script is:inline src="/highlight/highlight.min.js"></script>
+<script is:inline>
+  document.querySelectorAll("pre code").forEach((block) => {
+    hljs.highlightElement(block);
+  });
+</script>
