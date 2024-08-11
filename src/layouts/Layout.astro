@@ -41,7 +41,7 @@ import { ViewTransitions } from "astro:transitions";
     <!-- Google tag (gtag.js) -->
     <script
       async
-      src={import.meta.env.PUBLIC_GOOGLE_ANALYTICS_URL}
+      src="https://www.googletagmanager.com/gtag/js?id=G-1E2ZEJ8GW9"
       type="text/partytown"></script>
     <script type="text/partytown">
       window.dataLayer = window.dataLayer || [];
@@ -50,7 +50,7 @@ import { ViewTransitions } from "astro:transitions";
       }
       gtag("js", new Date());
 
-      gtag("config", import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID);
+      gtag("config", "G-1E2ZEJ8GW9");
     </script>
     <script is:inline>
       function setInitColorMode() {
@@ -76,6 +76,7 @@ import { ViewTransitions } from "astro:transitions";
       }
       document.addEventListener("astro:after-swap", setInitColorMode);
       setInitColorMode();
+      console.log(import.meta.env);
     </script>
   </body>
 </html>
