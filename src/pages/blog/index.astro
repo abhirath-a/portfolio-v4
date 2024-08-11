@@ -1,11 +1,9 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { contentfulClient } from "@/lib/contentful";
-import type { BlogPost } from "@/lib/contentful";
+import { contentfulClient, type BlogPost } from "@/lib/contentful";
 
 const entries = await contentfulClient.getEntries<BlogPost>({
   content_type: "blogPost",
-  
 });
 
 const posts = entries.items.map((item) => {
@@ -27,7 +25,7 @@ const posts = entries.items.map((item) => {
         <h1 class="text-4xl font-bold mb-4">Posts</h1>
       )
     }
-    <ul>
+    <ul class="flex gap-2 flex-col">
       {
         // @ts-ignore
         posts.map((post: Post) => (

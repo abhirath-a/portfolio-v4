@@ -8,7 +8,10 @@ import {
   MARKS,
   BLOCKS,
   type Document,
-  type TopLevelBlock,
+  INLINES,
+  type Block,
+  type Inline,
+  type Text,
 } from "@contentful/rich-text-types";
 
 let post;
@@ -27,7 +30,6 @@ try {
 } catch (error) {
   return Astro.redirect("/404");
 }
-
 const renderDocument = (content: Document) =>
   documentToHtmlString(content, {
     renderMark: {
@@ -38,6 +40,10 @@ const renderDocument = (content: Document) =>
       [BLOCKS.EMBEDDED_ASSET]: (node) => {
         const { file } = node.data.target.fields;
         return `<img src="${file.url}" alt="${file.fileName}"></img>`;
+      },
+      [INLINES.ENTRY_HYPERLINK]: (node: Inline | Block) => {
+        // @ts-expect-error Dumb LSP thinks that node.content[0] doesn't have a value? it works in the browser so whatever
+        return `<a href="/blog/${node.data.target.fields.slug}">${node.content[0].value}</a>`;
       },
     },
   });
