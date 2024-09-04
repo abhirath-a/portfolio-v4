@@ -6,7 +6,7 @@ const blog = defineCollection({
     date: z
       .string()
       .or(z.date())
-      .transform((val: string) => new Date(val)),
+      .transform((val) => new Date(val)),
     description: z.string().optional(),
     draft: z.boolean().optional(),
   }),
