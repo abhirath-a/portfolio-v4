@@ -7,4 +7,3 @@
 - ⚡ Fast start time + content using Astro.
 - 📦 MDX for beautiful content.
 - 🌈 ShadcnUI for beautiful UI.
-- 📊 Analytics with Partytown and Google Analytics
