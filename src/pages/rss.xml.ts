@@ -1,7 +1,6 @@
 import rss, { type RSSFeedItem } from "@astrojs/rss";
 import { getCollection } from "astro:content";
 
-const parser = new MarkdownIt();
 export async function GET(context: any) {
   const blog = await getCollection("blog", ({ data }) => {
     return data.draft !== true;
@@ -19,9 +18,6 @@ export async function GET(context: any) {
         // Compute RSS link from post `slug`
         // This example assumes all posts are rendered as `/blog/[slug]` routes
         link: `/blog/${post.slug}/`,
-        content: sanitizeHtml(parser.render(post.body), {
-          allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
-        }),
       };
     }) as RSSFeedItem[],
     customData: `<language>en-us</language>`,
