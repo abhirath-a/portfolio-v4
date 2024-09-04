@@ -2,6 +2,7 @@
 interface Props {
   title: string;
   classList?: string;
+  withHtmx?: boolean;
 }
 
 const { title, classList } = Astro.props;
@@ -14,23 +15,22 @@ import { ViewTransitions } from "astro:transitions";
 ---
 
 <!doctype html>
-<html lang="en" transition:animate="initial">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="stylesheet" href="/highlight/styles/catppuccin-mocha.css" />
-    <ViewTransitions />
+    <!-- <link rel="stylesheet" href="/highlight/styles/catppuccin-mocha.css" /> -->
+    <!-- <ViewTransitions /> -->
     <title>
-      {import.meta.env.DEV && "DEV -"}
       {title} - Abhirath
     </title>
   </head>
   <body
     class={cn(
-      "min-h-screen min-w-[100vw] bg-background font-sans antialiased leading-tight tracking-tight max-w-5xl w-11/12 container flex flex-col",
+      "min-h-screen min-w-[100vw] bg-background font-sans antialiased leading-tight tracking-tight",
       classList
     )}
   >

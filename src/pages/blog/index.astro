@@ -1,19 +1,12 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { contentfulClient, type BlogPost } from "@/lib/contentful";
-
-const entries = await contentfulClient.getEntries<BlogPost>({
-  content_type: "blogPost",
-});
-
-const posts = entries.items.map((item) => {
-  const { title, date, slug } = item.fields;
-  return {
-    title,
-    slug,
-    date: new Date(date).toLocaleDateString(),
-  };
-});
+import { getCollection } from "astro:content";
+interface Post {
+  data: { title: string; date: string; description?: string };
+  slug: string;
+}
+const unfilteredPosts = await getCollection("blog");
+const posts = unfilteredPosts.filter((post) => !post.data.draft);
 ---
 
 <Layout title="Blog">
@@ -25,15 +18,15 @@ const posts = entries.items.map((item) => {
         <h1 class="text-4xl font-bold mb-4">Posts</h1>
       )
     }
-    <ul class="flex gap-2 flex-col">
+    <ul>
       {
         // @ts-ignore
         posts.map((post: Post) => (
           <li class="flex justify-between">
             <a href={`/blog/${post.slug}/`} class="underline text-lg">
-              {post.title}
+              {post.data.title}
             </a>
-            <time class="text-gray-500 dark:text-gray-400">{post.date}</time>
+            <p>{new Date().toLocaleDateString(post.data.date)}</p>
           </li>
         ))
       }

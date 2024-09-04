@@ -1,74 +1,45 @@
 ---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
-import { contentfulClient } from "@/lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { BlogPost } from "@/lib/contentful";
 import { Separator } from "@/components/ui/separator";
-import {
-  MARKS,
-  BLOCKS,
-  type Document,
-  INLINES,
-  type Block,
-  type Inline,
-  type Text,
-} from "@contentful/rich-text-types";
 
-let post;
-const { slug } = Astro.params;
-try {
-  const data = await contentfulClient.getEntries<BlogPost>({
-    content_type: "blogPost",
-    "fields.slug": slug,
-  });
-  const { title, date, content } = data.items[0].fields;
-  post = {
-    title,
-    date: new Date(date).toLocaleDateString(),
-    content: content,
-  };
-} catch (error) {
-  return Astro.redirect("/404");
+export async function getStaticPaths() {
+	const posts = await getCollection("blog", ({ data }) => {
+  return data.draft !== true;
+});
+	// @ts-ignore
+	return posts.map((post: Post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
 }
-const renderDocument = (content: Document) =>
-  documentToHtmlString(content, {
-    renderMark: {
-      [MARKS.CODE]: (text: string) =>
-        `<pre class="bg-ctp-mocha-bg"><code>${text}</code></pre>`,
-    },
-    renderNode: {
-      [BLOCKS.EMBEDDED_ASSET]: (node) => {
-        const { file } = node.data.target.fields;
-        return `<img src="${file.url}" alt="${file.fileName}"></img>`;
-      },
-      [INLINES.ENTRY_HYPERLINK]: (node: Inline | Block) => {
-        // @ts-expect-error Dumb LSP thinks that node.content[0] doesn't have a value? it works in the browser so whatever
-        return `<a href="/blog/${node.data.target.fields.slug}">${node.content[0].value}</a>`;
-      },
-    },
-  });
+type Props = CollectionEntry<"blog">;
+
+const post = Astro.props;
+const { Content } = await post.render();
 ---
 
-<Layout title={post.title} classList="overflow-x-hidden">
-  <section class="flex w-full flex-col gap-2">
+<Layout title={post.data.title}>
+
+  <main class="flex w-full flex-col gap-2 overflow-x-hidden">
     <header class="flex w-full flex-col gap-3 mb-2">
-      {post.title && <h1 class="text-4xl font-bold">{post.title}</h1>}
+      {post.data.title && <h1 class="text-4xl font-bold">{post.data.title}</h1>}
+      {post.data.description && <p class="dark:text-slate-300 text-slate-600 italic text-sm">"{post.data.description}"</p>}
       {
-        post.date && (
-          <time class="dark:text-slate-400 text-slate-500">{post.date}</time>
+        post.data.date && (
+          <time class="dark:text-slate-400 text-slate-500">
+            {new Date(post.data.date).toDateString()}
+          </time>
         )
       }
-      <Separator className="my-2" />
-      <article
-        class="prose dark:prose-invert flex w-full flex-col md:max-w-4xl justify-center"
-        set:html={renderDocument(post.content)}
-      />
-    </header>
-  </section>
+    </header> 
+
+    <div class="my-2">    <Separator />
+</div>
+    <article class="prose dark:prose-invert flex w-full flex-col md:max-w-4xl overflow-x-hidden">
+      <Content />
+    </article>
+  </main>
+
 </Layout>
-<script is:inline src="/highlight/highlight.min.js"></script>
-<script is:inline>
-  document.querySelectorAll("pre code").forEach((block) => {
-    hljs.highlightElement(block);
-  });
-</script>

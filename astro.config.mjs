@@ -7,18 +7,23 @@ import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "server",
+  // output: "server",
   integrations: [
     react(),
     tailwind(),
     partytown({
       forward: ["dataLayer.push"],
     }),
-    
   ],
-
-  adapter: vercel(),
   image: {
     remotePatterns: [{ protocol: "https" }],
+  },
+  markdown: {
+    syntaxHighlight: "shiki",
+    shikiConfig: {
+      theme: "catppuccin-mocha",
+      wrap: true,
+      transformers: [],
+    },
   },
 });

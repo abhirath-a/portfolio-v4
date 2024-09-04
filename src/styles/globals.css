@@ -70,3 +70,6 @@
 p:empty {
   display: none;
 }
+dialog::backdrop {
+  @apply bg-black/80;
+}
