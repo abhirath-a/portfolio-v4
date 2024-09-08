@@ -11,9 +11,9 @@ export default defineConfig({
   integrations: [
     react(),
     tailwind(),
-    partytown({
-      forward: ["dataLayer.push"],
-    }),
+    // partytown({
+    //   forward: ["dataLayer.push"],
+    // }),
   ],
   image: {
     remotePatterns: [{ protocol: "https" }],

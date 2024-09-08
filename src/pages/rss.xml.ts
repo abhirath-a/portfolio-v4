@@ -18,6 +18,7 @@ export async function GET(context: any) {
         // Compute RSS link from post `slug`
         // This example assumes all posts are rendered as `/blog/[slug]` routes
         link: `/blog/${post.slug}/`,
+        content: post.body,
       };
     }) as RSSFeedItem[],
     customData: `<language>en-us</language>`,

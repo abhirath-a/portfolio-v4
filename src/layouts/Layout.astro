@@ -2,7 +2,6 @@
 interface Props {
   title: string;
   classList?: string;
-  withHtmx?: boolean;
 }
 
 const { title, classList } = Astro.props;
@@ -11,7 +10,6 @@ import "@fontsource-variable/jetbrains-mono";
 import "@fontsource-variable/inter";
 import Header from "@/components/Header/index.astro";
 import { cn } from "@/lib/utils";
-import { ViewTransitions } from "astro:transitions";
 ---
 
 <!doctype html>
@@ -22,8 +20,6 @@ import { ViewTransitions } from "astro:transitions";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <!-- <link rel="stylesheet" href="/highlight/styles/catppuccin-mocha.css" /> -->
-    <!-- <ViewTransitions /> -->
     <title>
       {title} - Abhirath
     </title>
@@ -39,7 +35,7 @@ import { ViewTransitions } from "astro:transitions";
       <slot />
     </main>
     <!-- Google tag (gtag.js) -->
-    <script
+    <!-- <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-1E2ZEJ8GW9"
       type="text/partytown"></script>
@@ -76,6 +72,6 @@ import { ViewTransitions } from "astro:transitions";
       }
       document.addEventListener("astro:after-swap", setInitColorMode);
       setInitColorMode();
-    </script>
+    </script> -->
   </body>
 </html>
