@@ -22,7 +22,7 @@ import { buttonVariants } from "@/components/ui/button";
 ---
 
 <button
-  id="theme-toggle"
+  id="themeToggle"
   class={buttonVariants({ variant: "ghost", size: "icon" })}
   aria-label="Toggle theme"
 >
@@ -36,38 +36,26 @@ import { buttonVariants } from "@/components/ui/button";
 >
 
 <script is:inline>
-  // Function to get the current theme from localStorage or default to 'light'
   const getTheme = () =>
     localStorage.getItem("theme") ??
     (window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light");
 
-  // Function to set the theme in localStorage and update the document class
   const setTheme = (theme) => {
     document.documentElement.classList.toggle("dark", theme === "dark");
     localStorage.setItem("theme", theme);
   };
 
-  // Initialize the theme
   let theme = getTheme();
   setTheme(theme);
 
-  // Function to handle theme toggle
   const handleClick = () => {
     theme = theme === "light" ? "dark" : "light";
     setTheme(theme);
   };
-
-  // Set the initial button content based on the theme
-  document.addEventListener("DOMContentLoaded", () => {
-    document
-      .getElementById("theme-toggle")
-      .addEventListener("click", handleClick);
-  });
-  document.addEventListener("astro:after-swap", () => {
-    document
-      .getElementById("theme-toggle")
-      .addEventListener("click", handleClick);
-  });
+  const btn = document.getElementById("themeToggle")
+  // document.addEventListener("DOMContentLoaded", () => btn.addEventListener("click", handleClick));
+  // document.addEventListener("astro:after-swap", () => btn.addEventListener("click", handleClick));
+ btn.addEventListener("click", handleClick)
 </script>
