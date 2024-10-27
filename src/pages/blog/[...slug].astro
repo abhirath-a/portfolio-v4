@@ -1,6 +1,6 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
+// import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import { Separator } from "@/components/ui/separator";
 
@@ -8,21 +8,20 @@ export async function getStaticPaths() {
 	const posts = await getCollection("blog", ({ data }) => {
   return data.draft !== true;
 });
-  const headings = await Promise.all(
-    posts.map(async (post) => {
-      const data = await post.render();
-      return data.headings;
-    })
-  );
+  // const headings = await Promise.all(
+  //   posts.map(async (post) => {
+  //     const data = await post.render();
+  //     return data.headings;
+  //   })
+  // );
 
 	// @ts-ignore
 	return posts.map((post: Post, index) => ({
 		params: { slug: post.slug },
-		props: {post, headings: headings[index]},
+		props: {post},
 	}));
 }
 type Props = CollectionEntry<"blog">;
-// @ts-expect-error - props are provided by getStaticPaths
 const {post, headings} = Astro.props;
 const { Content } = await post.render();
 ---
