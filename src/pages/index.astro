@@ -1,13 +1,15 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+// import {Separator} from "@/components/ui/separator"
+// import projects from "../projects";
 ---
 
 <Layout title="Home">
-  <div class="max-w-[65ch] flex flex-col">
-    <h2 class="font-bold text-2xl my-4">
-      Hi, I'm Abhi, a web developer and student living in Washington, DC.
+  <div class="max-w-[85ch]   flex gap-8 flex-col min-h-full">
+    <h2 class="font-bold text-6xl my-4">
+      Hi, I'm Abhi, a web developer and student.
     </h2>
-    <p class="leading-[1.75]">
+    <p class="leading-[1.75] text-xl">
       I spend my free time either learning new ideas or building upon those new
       ideas. I am personally interested in Neural Networks, Web Development, and
       Data Science. I usually program, paint, or read in my spare time.
@@ -16,4 +18,6 @@ import Layout from "@/layouts/Layout.astro";
       Day to day, I work with React, NextJS, Typescript, and TailwindCSS. I have dipped into a bit of HonoJS, Express, Django, and Go.
     </p>
   </div>
+  <!-- <Separator className="border-2 dark:border-slate-800 mt-16" /> -->
+  
 </Layout>

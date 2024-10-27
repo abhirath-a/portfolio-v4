@@ -8,15 +8,22 @@ export async function getStaticPaths() {
 	const posts = await getCollection("blog", ({ data }) => {
   return data.draft !== true;
 });
+  const headings = await Promise.all(
+    posts.map(async (post) => {
+      const data = await post.render();
+      return data.headings;
+    })
+  );
+
 	// @ts-ignore
-	return posts.map((post: Post) => ({
+	return posts.map((post: Post, index) => ({
 		params: { slug: post.slug },
-		props: post,
+		props: {post, headings: headings[index]},
 	}));
 }
 type Props = CollectionEntry<"blog">;
-
-const post = Astro.props;
+// @ts-expect-error - props are provided by getStaticPaths
+const {post, headings} = Astro.props;
 const { Content } = await post.render();
 ---
 
@@ -34,12 +41,24 @@ const { Content } = await post.render();
         )
       }
     </header> 
-
     <div class="my-2">    <Separator />
 </div>
-    <article class="prose dark:prose-invert flex w-full flex-col md:max-w-4xl overflow-x-hidden">
+    <div class="flex gap-2 relative">
+      <article class="prose dark:prose-invert flex w-full flex-col md:max-w-4xl overflow-x-hidden flex-2 grow">
       <Content />
     </article>
+<div class="sticky top-0">
+<!-- {headings.map((heading: {depth: number, slug: string, text: string}) => {   const level = heading.depth; -->
+<!--             const sizeClass = `text-slate-${6 - level}xl`; // Size based on depth -->
+<!--             const marginClass = `ml-${level * 4}`; // Indentation based on depth -->
+<!---->
+<!--             return ( -->
+<!--                 <div class={`${sizeClass} ${marginClass}`}> -->
+<!--                     {heading.text} -->
+<!--                 </div> -->
+<!-- );} )} -->
+</div>
+    </div>
   </main>
 
 </Layout>

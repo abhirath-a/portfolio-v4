@@ -9,79 +9,62 @@ import MobileNav from "./MobileNav";
 import { buttonVariants } from "../ui/button";
 import { Link } from "lucide-react";
 console.log(currentURL);
+const activeClass = "dark:text-blue-300 text-sky-500";
+const inactiveClass = "dark:text-slate-200 text-slate-200";
 ---
 
 <div
-  class="container w-full py-6 flex flex-col gap-3 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+  class="border-b-2 border-solid text-slate-50 border-sky-400 w-full h-full  backdrop-blur supports-[backdrop-filter]:bg-background/60"
 >
-  <header class="flex justify-between items-center">
-    <div class="flex justify-center items-center gap-6">
-      {" "}
-      <h1 class="font-bold text-xl">Abhirath A.</h1>
-      <ul class="hidden md:flex gap-6">
-        <li>
-          <a
-            href="/"
-            class={cn(
-              "hover:underline",
-              currentURL.length == 1
-                ? "dark:text-white text-black"
-                : "dark:text-slate-400 text-slate-500"
-            )}
-          >
-            About
-          </a>
-        </li>
-        <li>
-          <a
-            href="/projects"
-            class={cn(
-              "hover:underline",
-              currentURL.includes("/projects")
-                ? "dark:text-white text-black"
-                : "dark:text-slate-400 text-slate-500"
-            )}
-          >
-            Projects
-          </a>
-        </li>
-        <li>
-          <a
-            href="/blog"
-            class={cn(
-              "hover:underline",
-              currentURL.includes("/blog")
-                ? "dark:text-white text-black"
-                : "dark:text-slate-400 text-slate-500"
-            )}
-          >
-            Blog
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="flex gap-2">
-      <ModeToggle />
+  <div class="container min-w-full py-6 flex flex-col gap-3 dark:bg-sky-600 bg-sky-800">
+    <header class="flex justify-between items-center">
+      <div class="flex justify-center items-center gap-6 mx-5">
+        {" "}
+        <h1 class="font-bold text-3xl underline dark:decoration-sky-300 decoration-sky-600">Abhirath A.</h1>
+        <ul class="hidden md:flex gap-6">
+          <li>
+            <a
+              href="/"
+              class={cn(
+                "hover:underline",
+                currentURL.length == 1
+                  ? activeClass                  : inactiveClass
+              )}
+            >
+              About
+            </a>
+          </li>
+          <li>
+            <a
+              href="/projects"
+              class={cn(
+                "hover:underline",
+                currentURL.includes("/projects")
+                   ? activeClass                  : inactiveClass
+              )}
+            >
+              Projects
+            </a>
+          </li>
+          <li>
+            <a
+              href="/blog"
+              class={cn(
+                "hover:underline",
+                currentURL.includes("/blog")
+                ? activeClass                  : inactiveClass
 
-      <ul class="hidden md:flex gap-2 items-center justify-center">
-        {
-          links.map((link) => (
-            <li>
-              <a
-                href={link.href}
-                class={buttonVariants({ variant: "ghost", size: "icon" })}
-                target="_blank"
-                aria-label={`Visit ${link.name}`}
-              >
-                <link.icon />
-              </a>
-            </li>
-          ))
-        }
-        <li></li>
-      </ul>
-      <div class="md:hidden flex gap-2">
-        <MobileNav currentURL={currentURL} client:only="react">
+              )}
+            >
+              Blog
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="flex gap-2">
+        <ModeToggle />
+
+        <ul class="hidden md:flex gap-2 items-center justify-center">
           {
             links.map((link) => (
               <li>
@@ -91,13 +74,32 @@ console.log(currentURL);
                   target="_blank"
                   aria-label={`Visit ${link.name}`}
                 >
-                  <link.icon />
+                  <link.icon class="text-slate-50 fill-slate-50" />
                 </a>
               </li>
             ))
           }
-        </MobileNav>
+          <li></li>
+        </ul>
+        <div class="md:hidden flex gap-2 dark:text-slate-50 text-slate-900">
+          <MobileNav currentURL={currentURL} client:only="react">
+            {
+              links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class={buttonVariants({ variant: "ghost", size: "icon" })}
+                    target="_blank"
+                    aria-label={`Visit ${link.name}`}
+                  >
+                    <link.icon />
+                  </a>
+                </li>
+              ))
+            }
+          </MobileNav>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
+  </div>
 </div>
