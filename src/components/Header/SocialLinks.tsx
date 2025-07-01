@@ -8,7 +8,7 @@ export const links = [
     icon: () => <Mail />,
   },
   {
-    href: "https://github.com/TalkativeDiv",
+    href: "https://github.com/abhirath-a",
     name: "Github",
     // icon: () => (
     //   <svg
