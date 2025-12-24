@@ -1,30 +1,29 @@
 import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
 import { defineConfig } from "astro/config";
-import vercel from "@astrojs/vercel/serverless";
-import partytown from "@astrojs/partytown";
-
+import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
+import pagefind from "astro-pagefind";
 
 // https://astro.build/config
 export default defineConfig({
-  // output: "server",
-  integrations: [react(), tailwind()
-  // partytown({
-  //   forward: ["dataLayer.push"],
-  // }),
-  , mdx()],
+  integrations: [react(), mdx(), pagefind()],
+  prefetch: true,
   image: {
-    remotePatterns: [{
-      protocol: "https"
-    }]
+    remotePatterns: [
+      {
+        protocol: "https",
+      },
+    ],
   },
   markdown: {
     syntaxHighlight: "shiki",
     shikiConfig: {
-      theme: "catppuccin-mocha",
+      theme: "kanagawa-dragon",
       wrap: true,
-      transformers: []
-    }
-  }
+      transformers: [],
+    },
+  },
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

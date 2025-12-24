@@ -1,15 +1,13 @@
 ---
 interface Props {
-  title: string;
-  classList?: string;
+	title: string;
+	classList?: string;
 }
 
-const { title, classList } = Astro.props;
-import "@/styles/globals.css";
-import "@fontsource-variable/jetbrains-mono";
+const { title } = Astro.props;
+import "../styles/globals.css";
 import "@fontsource-variable/inter";
-import Header from "@/components/Header/index.astro";
-import { cn } from "@/lib/utils";
+import Header from "@/components/Header.astro";
 ---
 
 <!doctype html>
@@ -24,54 +22,25 @@ import { cn } from "@/lib/utils";
       {title} - Abhirath
     </title>
   </head>
-  <body
-    class={cn(
-      "min-h-[100vh] min-w-[100vw] bg-background/90 font-sans antialiased leading-tight tracking-tight flex flex-col",
-      classList
-    )}
-  >
-    <Header />
-    <main class="min-h-full flex-grow container w-full py-6 flex flex-col gap-4 justify-center items-center">
+  <body>
+
+<div class="min-h-screen bg-background text-foreground relative">
+  <!-- Mouse background -->
+    <div id="grid-bg" class="fixed inset-0 z-0 grid-background" />
+      <Header />
+
+    <main class="lg:ml-64 px-6 lg:pl-32 lg:pr-16 py-20 lg:py-16 max-w-4xl w-full mt-16 lg:mt-0">
       <slot />
+
     </main>
-    <!-- Google tag (gtag.js) -->
-    <!-- <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-1E2ZEJ8GW9"
-      type="text/partytown"></script>
-    <script type="text/partytown">
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-1E2ZEJ8GW9");
-    </script>
-    <script is:inline>
-      function setInitColorMode() {
-        const localTheme = (() => {
-          if (
-            typeof localStorage !== "undefined" &&
-            localStorage.getItem("theme")
-          ) {
-            return localStorage.getItem("theme");
-          }
-          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            return "dark";
-          }
-          return "light";
-        })();
-
-        if (localTheme === "light") {
-          document.documentElement.classList.remove("dark");
-        } else {
-          document.documentElement.classList.add("dark");
-        }
-        window.localStorage.setItem("theme", localTheme);
-      }
-      document.addEventListener("astro:after-swap", setInitColorMode);
-      setInitColorMode();
-    </script> -->
+  </div>
+  <script is:inline>
+    // Mouse position for CSS
+    const gridBg = document.getElementById('grid-bg');
+    document.addEventListener('mousemove', (e) => {
+      gridBg.style.setProperty('--mouse-x', e.clientX + 'px');
+      gridBg.style.setProperty('--mouse-y', e.clientY + 'px');
+    });
+  </script>
   </body>
 </html>

@@ -6,8 +6,8 @@ import { Separator } from "@/components/ui/separator";
 
 export async function getStaticPaths() {
 	const posts = await getCollection("blog", ({ data }) => {
-  return data.draft !== true;
-});
+		return data.draft !== true;
+	});
 	// @ts-ignore
 	return posts.map((post: Post) => ({
 		params: { slug: post.slug },
