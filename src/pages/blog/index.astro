@@ -8,14 +8,14 @@ interface Post {
 const unfilteredPosts = await getCollection("blog");
 const posts = unfilteredPosts.filter((post) => !post.data.draft);
 
-posts.sort((a, b) => Date.parse(b.data.date) - Date.parse(a.data.date));
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
 <Layout title="Blog">
    
     <ul class="">
       {
-        posts.map((post: Post) => (
+        posts.map((post) => (
           <li class="flex justify-between my-2">
             <a href={`/blog/${post.slug}/`} class="underline text-lg">
               {post.data.title}

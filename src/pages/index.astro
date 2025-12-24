@@ -1,25 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import projects from "../projects";
-import { SunMoon } from "@lucide/astro";
-
-const writings = [
-	{
-		id: "understanding-react-hooks",
-		title: "Understanding React Hooks",
-		date: "Jan 15, 2024",
-	},
-	{
-		id: "building-scalable-apis",
-		title: "Building Scalable APIs",
-		date: "Dec 8, 2023",
-	},
-	{
-		id: "typescript-best-practices",
-		title: "TypeScript Best Practices",
-		date: "Nov 22, 2023",
-	},
-];
+import {getCollection} from "astro:content";
+const posts = (await getCollection("blog")).splice(0,3);
 ---
 <Layout title="About">
       <!-- About -->
@@ -35,7 +18,7 @@ const writings = [
         <h3 class="text-sm uppercase tracking-wider font-bold text-muted-foreground mb-8 lg:mb-12">Selected Work</h3>
         <div class="space-y-8">
           {projects.map(project => (
-            <div key={project.id} class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+            <div  class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
               <div class="flex-1">
                 <h4 class="text-lg lg:text-xl font-bold mb-1">{project.title}</h4>
                 <p class="text-sm text-muted-foreground">{project.summary}</p>
@@ -50,10 +33,10 @@ const writings = [
       <section id="writing" class="py-12 lg:py-20 border-t border-border">
         <h3 class="text-sm uppercase tracking-wider font-bold text-muted-foreground mb-8 lg:mb-12">Writing</h3>
         <div class="space-y-6">
-          {writings.map(post => (
-            <div key={post.id} class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
-              <a href={`#${post.id}`} class="text-base lg:text-lg font-medium hover:text-accent-blue transition-colors">{post.title}</a>
-              <span class="text-sm text-muted-foreground sm:ml-6 shrink-0">{post.date}</span>
+          {posts.map(post => (
+            <div  class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+              <a href={`#${post.slug}`} class="text-base lg:text-lg font-medium hover:text-accent-blue transition-colors">{post.data.title}</a>
+              <span class="text-sm text-muted-foreground sm:ml-6 shrink-0">{new Date(post.data.date).toLocaleDateString()}</span>
             </div>
           ))}
         </div>
